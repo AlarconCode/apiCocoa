@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import mongoose from "mongoose";
 import app from "./app.js";
 const PORT = app.get('PORT')
@@ -6,7 +8,7 @@ const PORT = app.get('PORT')
 const start = async () => {
   try {
     await mongoose.connect(
-      'mongodb+srv://root:983328@cluster0.ycodasm.mongodb.net/DB_Cocoa', {useNewUrlParser: true}
+      process.env.BBDD_URL, {useNewUrlParser: true}
     );
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (error) {
