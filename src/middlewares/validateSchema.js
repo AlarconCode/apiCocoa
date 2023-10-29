@@ -1,7 +1,7 @@
 export const validateSchema = (schema) => async (req, res, next) => {
 
   try {
-    const res = await schema.validate(req.body)
+    // await schema.validate(req.body)
     next()
 
   } catch (e) {

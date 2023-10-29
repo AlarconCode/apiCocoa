@@ -46,12 +46,26 @@ export const createProduct = async (req, res) => {
   
   try {
 
-    const newProduct = new Product({user: req.user.id, ...req.body });
+    const {cat, desc, ingredientes, price} = req.body
+
+    const newProduct = new Product({
+      cat, 
+      desc,
+      ingredientes,
+      price,
+      user: req.user.id
+    })
+
+    if (req.file) {
+      const {filename} = req.file
+      newProduct.setImgUrl(filename)
+    }
+   
     const insertedProduct = await newProduct.save();
-    return res.json(insertedProduct);
+    return res.status(201).json(insertedProduct);
 
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ error })
   }
 
 }
@@ -60,9 +74,20 @@ export const updateProduct = async (req, res) => {
 
   try {
 
-    const product = await Product.findOneAndUpdate({_id: req.params.id}, req.body, { new: true });
-    if (!product) return res.status(404).json({message: 'product not found'})
-    res.json(product)
+    if (req.file) {
+      const {filename} = req.file
+      const product = await Product.findOneAndUpdate({_id: req.params.id}, {
+        ...req.body,
+        img: `${req.protocol}://${req.headers.host}/public/${filename}`
+      }, { new: true });
+      if (!product) return res.status(404).json({message: 'product not found'})
+      res.json(product)
+    } else {
+        const product = await Product.findOneAndUpdate({_id: req.params.id}, req.body, { new: true });
+        if (!product) return res.status(404).json({message: 'product not found'})
+        res.json(product)
+    }
+    
 
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -92,6 +117,22 @@ export const deleteProduct = async (req, res) => {
   
   } catch (error) {
     return res.status(500).json({ message: error.message })
+  }
+
+}
+
+export const upload = async (req, res) => {
+
+  try {
+    
+    console.log(req.file); 
+    return  res.status(201).json({
+      message: 'ok',
+      file: req.file
+    })
+
+  } catch (error) {
+    console.log(error);
   }
 
 }
