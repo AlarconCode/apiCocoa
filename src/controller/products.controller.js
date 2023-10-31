@@ -58,7 +58,7 @@ export const createProduct = async (req, res) => {
 
     if (req.file) {
       const {filename} = req.file
-      newProduct.setImgUrl(filename)
+      newProduct.img = `${req.protocol}://${req.headers.host}/public/${filename}`
     }
    
     const insertedProduct = await newProduct.save();
