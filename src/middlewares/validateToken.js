@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { TOKEN_SECRET } from '../../config.js';
+import dotenv from 'dotenv'
+dotenv.config()
 
 const getTokenFrom = req => {
   const authorization = req.get('authorization')
@@ -13,7 +14,7 @@ export const authRequired = (req, res, next) => {
 
   const token = getTokenFrom(req)
 
-  jwt.verify(token, TOKEN_SECRET, 
+  jwt.verify(token, process.env.TOKEN_SECRET, 
     (err, decode) => {
       if (err) return res.status(403).json(err)
 
