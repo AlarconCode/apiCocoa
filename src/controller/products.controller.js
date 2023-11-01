@@ -83,7 +83,10 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   
   try {
-    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.header({
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Origin': '*',
+    })
     
     if (req.files) {
       const {img} = req.files
