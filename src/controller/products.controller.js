@@ -81,10 +81,8 @@ export const createProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-
+  res.header('Access-Control-Allow-Origin', '*')
   try {
-     // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
-     if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
 
     if (req.files) {
       const {img} = req.files
@@ -113,9 +111,6 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
 
   try {
-    
-    // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
-    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
 
     const product = await Product.findByIdAndDelete(req.params.id)
     if (!product) {
