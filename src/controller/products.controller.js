@@ -47,7 +47,6 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
   
   try {
-
     const {cat, desc, ingredientes, price} = req.body
 
     const newProduct = new Product({
