@@ -4,4 +4,3 @@ config.js
 uploads/**
 !.gitKeep
 tmp
-uploads
