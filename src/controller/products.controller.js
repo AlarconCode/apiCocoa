@@ -132,19 +132,19 @@ export const deleteProduct = async (req, res) => {
 
 }
 
-export const upload = async (req, res) => {
+// export const upload = async (req, res) => {
 
-  try {
+//   try {
     
-    console.log(req.file); 
-    return  res.status(201).json({
-      message: 'ok',
-      file: req.file
-    })
+//     console.log(req.file); 
+//     return  res.status(201).json({
+//       message: 'ok',
+//       file: req.file
+//     })
 
-  } catch (error) {
-    console.log(error);
-  }
+//   } catch (error) {
+//     console.log(error);
+//   }
 
-}
+// }
  

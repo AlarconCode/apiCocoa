@@ -6,10 +6,10 @@ import {
   getProduct, 
   getProducts, 
   updateProduct, 
-  upload} from '../controller/products.controller.js'
+} from '../controller/products.controller.js'
 import { validateSchema } from '../middlewares/validateSchema.js';
 import { productSchema } from '../schemas/product.schema.js';
-import { multerUpload } from '../libs/storage.js';
+// import { multerUpload } from '../libs/storage.js';
 
 
 const productRouter = Router()
