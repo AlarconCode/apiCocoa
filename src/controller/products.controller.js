@@ -81,8 +81,19 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   
-  res.header('Access-Control-Allow-Credentials', true)
-  res.header('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  )
+  if (req.method === 'OPTIONS') {
+    res.status(200).end()
+    return
+  }
   
   try {
     
@@ -136,15 +147,6 @@ export const deleteProduct = async (req, res) => {
 
 }
 
-export const allowCors = (req, res) => {
-  const origin = req.header('origin')
-
-  res.header('Access-Control-Allow-Credentials', true)
-  res.header('Access-Control-Allow-Origin', origin)
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-  res.send(200)
-
-}
 
 // export const upload = async (req, res) => {
 
