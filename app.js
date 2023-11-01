@@ -17,9 +17,16 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(fileUpload({useTempFiles: true}))
 app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}))
+  application: {
+      cors: {
+          server: [
+              {
+                  origin: 'http://localhost:5173', //servidor que deseas que consuma o (*) en caso que sea acceso libre
+                  credentials: true
+              }
+          ]
+      }
+}}))
 app.use('/api', productRouter)
 app.use('/api', authRouter)
 // app.use('/public', express.static(join(CURRENT_DIR, '../../uploads')))
