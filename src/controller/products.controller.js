@@ -81,15 +81,19 @@ export const createProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Credentials', true)
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  )
+  
   try {
-
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    )
+  
+    // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
+    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
+    
     if (req.files) {
       const {img} = req.files
       const cloudFile = await uploadCloudinary(img.tempFilePath)
