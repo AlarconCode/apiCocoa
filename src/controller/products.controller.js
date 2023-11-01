@@ -1,5 +1,6 @@
 import { uploadCloudinary } from '../libs/cloudinary.js'
 import { Product } from '../model/product.model.js'
+import fs from 'fs-extra'
 
 export const getProducts = async (req, res) => {
   
@@ -61,6 +62,7 @@ export const createProduct = async (req, res) => {
       const {img} = req.files
       const cloudFile = await uploadCloudinary(img.tempFilePath)
       newProduct.img = cloudFile.secure_url
+      await fs.unlink(img.tempFilePath)
       console.log(cloudFile);
       const insertedProduct = await newProduct.save();
       res.status(201).json({
@@ -100,6 +102,7 @@ export const updateProduct = async (req, res) => {
     if (req.files) {
       const {img} = req.files
       const cloudFile = await uploadCloudinary(img.tempFilePath)
+      await fs.unlink(img.tempFilePath)
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
         // img: `${req.protocol}://${req.headers.host}/public/${filename}`
