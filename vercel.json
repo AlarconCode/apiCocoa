@@ -10,14 +10,6 @@
       {
           "src": "/(.*)",
           "dest": "/"
-      },
-      {
-        "src": "/api/(.*)",
-        "dest": "/api/$1.js",
-        "headers": {
-          "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-          "Access-Control-Allow-Headers": "Content-Type"
-        }
       }
   ]
 }
