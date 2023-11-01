@@ -1,3 +1,4 @@
+import { uploadCloudinary } from '../libs/cloudinary.js'
 import { Product } from '../model/product.model.js'
 
 export const getProducts = async (req, res) => {
@@ -56,13 +57,21 @@ export const createProduct = async (req, res) => {
       user: req.user.id
     })
 
-    if (req.file) {
-      const {filename} = req.file
-      newProduct.img = `${req.protocol}://${req.headers.host}/public/${filename}`
+    if (req.files) {
+      const {img} = req.files
+      const cloudFile = await uploadCloudinary(img.tempFilePath)
+      newProduct.img = cloudFile.secure_url
+      console.log(cloudFile);
+      const insertedProduct = await newProduct.save();
+      res.status(201).json({
+        message:'Product uploaded successfully',
+        newProduct: insertedProduct
+    })
+    } else {     
+      const insertedProduct = await newProduct.save();
+      return res.status(201).json(insertedProduct);
     }
    
-    const insertedProduct = await newProduct.save();
-    return res.status(201).json(insertedProduct);
 
   } catch (error) {
     return res.status(500).json({ error })
@@ -74,11 +83,13 @@ export const updateProduct = async (req, res) => {
 
   try {
 
-    if (req.file) {
-      const {filename} = req.file
+    if (req.files) {
+      const {img} = req.files
+      const cloudFile = await uploadCloudinary(img.tempFilePath)
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
-        img: `${req.protocol}://${req.headers.host}/public/${filename}`
+        // img: `${req.protocol}://${req.headers.host}/public/${filename}`
+        img: cloudFile.secure_url
       }, { new: true });
       if (!product) return res.status(404).json({message: 'product not found'})
       res.json(product)

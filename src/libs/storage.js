@@ -3,11 +3,12 @@ import {dirname, extname, join} from 'path';
 import { fileURLToPath } from "url";
 
 export const CURRENT_DIR = dirname(fileURLToPath(import.meta.url));
-const MIMETYPES = ['image/jpeg', 'image/png']
+console.log(CURRENT_DIR);
+const MIMETYPES = ['image/jpeg', 'image/png', 'image/jpg']
 
 export const multerUpload = multer({
   storage: multer.diskStorage({
-    destination: join(CURRENT_DIR, '../uploads'),
+    destination: join(CURRENT_DIR, '../../uploads'),
     filename: (req, file, cb) => {
       const fileExtension = extname(file.originalname)
       const fileName = file.originalname.split(fileExtension)[0]
