@@ -46,7 +46,8 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
   
   try {
-
+    // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
+    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
     const {cat, desc, ingredientes, price} = req.body
 
     const newProduct = new Product({
@@ -82,6 +83,8 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
 
   try {
+     // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
+     if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
 
     if (req.files) {
       const {img} = req.files
@@ -110,6 +113,9 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
 
   try {
+    // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
+    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
+
     const product = await Product.findByIdAndDelete(req.params.id)
     if (!product) {
       return res.status(404).json({
