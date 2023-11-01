@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { authRequired } from "../middlewares/validateToken.js";
 import { 
+  allowCors,
   createProduct, 
   deleteProduct, 
   getProduct, 
@@ -21,5 +22,6 @@ productRouter.post('/product', authRequired, validateSchema(productSchema), crea
 // productRouter.post('/upload', multerUpload.single('img'), upload)
 productRouter.put('/product/:id', authRequired, updateProduct)
 productRouter.delete('/product/:id', authRequired, deleteProduct)
+productRouter.options('/product/:id', allowCors)
 
 export default productRouter

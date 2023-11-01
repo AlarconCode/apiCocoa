@@ -46,8 +46,7 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
   
   try {
-    // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
-    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
+
     const {cat, desc, ingredientes, price} = req.body
 
     const newProduct = new Product({
@@ -82,12 +81,10 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   
+  res.header('Access-Control-Allow-Credentials', true)
+  res.header('Access-Control-Allow-Origin', '*')
+  
   try {
-    res.header({
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': '*',
-    })
-    console.log(res.header);
     
     if (req.files) {
       const {img} = req.files
@@ -136,6 +133,15 @@ export const deleteProduct = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
+
+}
+
+export const allowCors = (req, res) => {
+
+  res.header('Access-Control-Allow-Credentials', true)
+  res.header('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.send(200)
 
 }
 
