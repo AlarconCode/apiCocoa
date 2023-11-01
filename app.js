@@ -15,7 +15,10 @@ app.set('PORT', process.env.PORT || 4000)
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use(cookieParser())
-app.use(fileUpload({useTempFiles: true}))
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: './uploads'
+}))
 app.use(cors({
   credentials: true
 }))
