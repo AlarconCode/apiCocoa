@@ -137,9 +137,10 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const allowCors = (req, res) => {
+  const origin = req.header('origin')
 
   res.header('Access-Control-Allow-Credentials', true)
-  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Origin', origin)
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.send(200)
 
