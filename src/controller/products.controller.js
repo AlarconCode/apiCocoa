@@ -87,6 +87,7 @@ export const updateProduct = async (req, res) => {
       'Access-Control-Allow-Credentials': true,
       'Access-Control-Allow-Origin': '*',
     })
+    console.log(res.header);
     
     if (req.files) {
       const {img} = req.files
