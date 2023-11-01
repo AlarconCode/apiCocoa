@@ -113,6 +113,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
 
   try {
+    
     // Añadido para CORS policy en Vercel https://github.com/orgs/vercel/discussions/65#discussioncomment-2668426
     if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
 
