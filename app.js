@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import productRouter from './src/routes/products.routes.js'
 import authRouter from './src/routes/auth.routes.js'
-import { cloudinaryConfig } from './src/libs/cloudinary.js'
 // import { CURRENT_DIR } from './src/libs/storage.js'
 
 // MiddleWares
