@@ -1,6 +1,4 @@
-import { uploadCloudinary } from '../libs/cloudinary.js'
 import { Product } from '../model/product.model.js'
-import fs from 'fs-extra'
 
 export const getProducts = async (req, res) => {
   
