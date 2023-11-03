@@ -4,14 +4,17 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'Cocoa',
-    format: async (req, file) => 'jpeg', // supports promises as well
-    public_id: (req, file) => file.originalname,
+  params: async (req, file) => {
+    return {
+      folder: 'Cocoa',
+      resource_type: 'auto',
+      allowedFormats: ['jpg', 'jpeg', 'png'],
+      path: file.path
+    }
   },
 });
 
-export const parser = multer({ storage: storage })
+export const parser = multer({ storage })
 
 // export const multerUpload = multer({
 //   storage : multer.memoryStorage({
