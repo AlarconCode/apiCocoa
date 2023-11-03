@@ -57,12 +57,9 @@ export const createProduct = async (req, res) => {
       user: req.user.id
     })
 
-    if (req.files) {
-      const {img} = req.files
-      const cloudFile = await uploadCloudinary(img.tempFilePath)
-      newProduct.img = cloudFile.secure_url
-      await fs.unlink(img.tempFilePath)
-      console.log(cloudFile);
+    if (req.file) {
+      console.log(req.file);
+      newProduct.img = req.file.path
       const insertedProduct = await newProduct.save();
       res.status(201).json({
         message:'Product uploaded successfully',
@@ -82,30 +79,13 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   
-  res.setHeader('Access-Control-Allow-Credentials', true)
-  // res.setHeader('Access-Control-Allow-Origin', '*')
-  // another common pattern
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  )
-  if (req.method === 'OPTIONS') {
-    res.status(200).end()
-    return
-  }
-  
   try {
     
-    if (req.files) {
-      const {img} = req.files
-      const cloudFile = await uploadCloudinary(img.tempFilePath)
-      await fs.unlink(img.tempFilePath)
+    if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
         // img: `${req.protocol}://${req.headers.host}/public/${filename}`
-        img: cloudFile.secure_url
+        img: req.file.path
       }, { new: true });
       if (!product) return res.status(404).json({message: 'product not found'})
       res.json(product)
