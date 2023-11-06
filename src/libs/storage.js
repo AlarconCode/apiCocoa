@@ -19,12 +19,9 @@ const storage = new CloudinaryStorage({
       folder: 'Cocoa',
       resource_type: 'auto',
       allowedFormats: ['jpg', 'jpeg', 'png'],
-      filename: (req, file, cb) => {
-        cb(null, file.originalname)
-      },
       path: file.path
     }
-  },
+  }
 });
 
 export const parser = multer({ storage })

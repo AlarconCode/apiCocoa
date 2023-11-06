@@ -56,7 +56,7 @@ export const createProduct = async (req, res) => {
     })
 
     if (req.file) {
-      console.log(req.file);
+      console.log( 'CreateProduct', req.file);
       newProduct.img = req.file.path
       const insertedProduct = await newProduct.save();
       res.status(201).json({
@@ -78,7 +78,7 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   
   try {
-    console.log(req.file);
+    console.log( 'UpdateProduct', req.file);
     if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
