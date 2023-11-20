@@ -18,7 +18,7 @@ export const getUsers = async (req, res) => {
 }
 
 export const register = async (req, res) => {
-  const {name, surname, email, password, img, rol} = req.body
+  const { name, email, password, img } = req.body
 
   try {
 
@@ -38,18 +38,19 @@ export const register = async (req, res) => {
 
     const newUser = new User({
       name,
-      surname,
       email,
       password: passwordHash,
-      img,
-      rol
+      img
     })
 
     const userSaved = await newUser.save()
     const token = await createAccessToken({id: userSaved._id})
      
     res
-    .cookie('token', token)
+    .cookie("jwt", token, {
+      httpOnly: false,
+      maxAge: 3 * 24 * 60 * 60 * 1000
+    })
     .json({
       error: false,
       code: 200,
@@ -57,12 +58,8 @@ export const register = async (req, res) => {
       newUser: {
         id: userSaved._id,
         name: userSaved.name,
-        surname: userSaved.surname,
         email: userSaved.email,
-        img: userSaved.img,
-        rol: userSaved.rol,
-        createAt: userSaved.createdAt,
-        updateAt: userSaved.updatedAt
+        img: userSaved.img
       }
     })
   } catch (error) {
@@ -122,15 +119,16 @@ export const login = async (req, res) => {
       const token = await createAccessToken({id: userFound._id})
 
       res
+      .cookie("jwt", token, {
+        httpOnly: false,
+        maxAge: 3 * 24 * 60 * 60 * 1000
+      })
       .json({
         error: false,
         code: 200,
         message: 'user login successfully',
-        token,
         user: {
-          id: userFound._id,
           name: userFound.name,
-          surname: userFound.surname,
           email: userFound.email,
           img: userFound.img
         }
@@ -193,23 +191,8 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
 
   try {
-
-    const accessToken = req.get('authorization');
-    // get the session token from request header
-    // if (accessToken && accessToken.toLowerCase().startsWith('bearer ')) {
-      //   accessToken = accessToken.substring(7)
-      // }
-      if (!accessToken) return res.status(204).json({message: 'token missed'}); // No content    
-      const checkIfBlacklisted = await Blacklist.findOne({token: accessToken}); // Check if that token is blacklisted
-      // if true, send a no content response.
-      if (checkIfBlacklisted) return res.status(204).json({message: 'token in blacklist'});
-      // otherwise blacklist token
-      const newBlacklist = new Blacklist({
-        token: accessToken,
-      });
-    await newBlacklist.save();
-    // Also clear request cookie on client
-    // res.setHeader('Clear-Site-Data', '"cookies", "storage"');
+    console.log(req.headers);
+    res.setHeader('Clear-Site-Data', '"cookies", "storage"');
     return res.status(200).json({ message: 'You are logged out!' });
   
   } catch (err) {

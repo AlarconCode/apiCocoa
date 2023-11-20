@@ -13,7 +13,7 @@ let productSchema = new Schema({
     type: String
   },
   price: {
-    type: String
+    type: Number
   },
   img: {
     type: String

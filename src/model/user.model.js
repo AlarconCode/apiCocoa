@@ -6,9 +6,6 @@ let userSchema = new Schema({
     type: String,
     required: true,
   },
-  surname: {
-    type: String
-  },
   email: {
     type: String,
     required: true,
@@ -21,10 +18,7 @@ let userSchema = new Schema({
   },
   img: {
     type: String
-  },
-  rol: {
-    type: String
-  },
+  }
 }, {
   timestamps: true 
 })
