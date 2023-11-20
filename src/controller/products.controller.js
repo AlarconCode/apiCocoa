@@ -82,7 +82,6 @@ export const updateProduct = async (req, res) => {
     if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
-        // img: `${req.protocol}://${req.headers.host}/public/${filename}`
         img: req.file.path
       }, { new: true });
       if (!product) return res.status(404).json({message: 'product not found'})
