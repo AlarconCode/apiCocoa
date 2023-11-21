@@ -1,12 +1,17 @@
 export const validateSchema = (schema) => async (req, res, next) => {
 
   try {
-    // await schema.validate(req.body)
+    await schema.validate(req.body, { abortEarly: false})
+    console.log('registro validado en el back');
     next()
 
   } catch (e) {
-    console.log(e);
-    return res.status(500).json({ type: e.name, message: e.message });
+
+    return res.status(400).json({ 
+      error: true, 
+      code: 400,
+      message: e.errors 
+    });
   }
 
 }

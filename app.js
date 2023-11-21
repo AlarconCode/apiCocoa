@@ -14,8 +14,8 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://app-cocoa.vercel.app/', 'https://cocoa-vercel.vercel.app/' ],
-  methods: ["GET", "POST", "PUT", "OPTIONS"],
+  origin: ['http://localhost:5173', 'https://app-cocoa.vercel.app', 'https://cocoa-vercel.vercel.app' ],
+  methods: ["GET", "POST", "PUT"],
   credentials: true
 }))
 app.use('/api', productRouter)

@@ -111,8 +111,8 @@ export const login = async (req, res) => {
       if (!(userFound && passwordCorrect)) {
         return res.status(401).json({
           error: true,
-          code: 401,
-          message: 'password o usuario incorrecto'
+          code: 400,
+          message: ['password o usuario incorrecto']
         })
       }
 
