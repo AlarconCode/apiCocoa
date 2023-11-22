@@ -18,9 +18,9 @@ const productRouter = Router()
 productRouter.get('/products', getProducts)
 productRouter.get('/products/:cat', getProducts)
 productRouter.get('/product/:id', getProduct)
-productRouter.post('/product', validateSchema(productSchema), parser.single('img'), createProduct)
+productRouter.post('/product', authRequired, parser.single('img'), createProduct)
 // productRouter.post('/upload', multerUpload.single('img'), upload)
-productRouter.put('/product/:id', authRequired, validateSchema(productSchema), parser.single('img'), updateProduct)
+productRouter.put('/product/:id', authRequired, parser.single('img'), updateProduct)
 productRouter.delete('/product/:id', authRequired, deleteProduct)
 
 export default productRouter
