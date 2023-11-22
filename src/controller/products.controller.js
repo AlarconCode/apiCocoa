@@ -77,10 +77,7 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
 
-  
   try {
-    console.log('bodyController', req.body);
-    console.log( 'UpdateProduct', req.file);
     if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
@@ -96,7 +93,8 @@ export const updateProduct = async (req, res) => {
     
 
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    console.log(error);
+    res.status(500).json({ message: 'Internal server error'})
   }
   
 

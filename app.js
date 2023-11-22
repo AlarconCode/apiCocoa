@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import productRouter from './src/routes/products.routes.js'
 import authRouter from './src/routes/auth.routes.js'
-import { validateProductSchema } from './src/middlewares/validate-productSchema.js'
 
 
 // MiddleWares
