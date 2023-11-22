@@ -76,8 +76,10 @@ export const createProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
+
   
   try {
+    console.log('bodyController', req.body);
     console.log( 'UpdateProduct', req.file);
     if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
