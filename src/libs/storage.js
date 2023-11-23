@@ -13,7 +13,6 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
-    console.log('storageFile', file);
     return {
       folder: 'Cocoa',
       public_id: file.originalname + '-' + Date.now(),
