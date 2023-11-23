@@ -56,7 +56,6 @@ export const createProduct = async (req, res) => {
     })
 
     if (req.file) {
-      console.log( 'CreateProduct', req.file);
       newProduct.img = req.file.path
       const insertedProduct = await newProduct.save();
       res.status(201).json({
@@ -76,16 +75,18 @@ export const createProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-  
+
   try {
-    console.log( 'UpdateProduct', req.file);
     if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
         img: req.file.path
       }, { new: true });
       if (!product) return res.status(404).json({message: 'product not found'})
-      res.json(product)
+      res.status(201).json({
+        message:'Product updated successfully',
+        newProduct: product
+    })
     } else {
         const product = await Product.findOneAndUpdate({_id: req.params.id}, req.body, { new: true });
         if (!product) return res.status(404).json({message: 'product not found'})
@@ -94,7 +95,8 @@ export const updateProduct = async (req, res) => {
     
 
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    console.log(error);
+    res.status(500).json({ message: 'Internal server error'})
   }
   
 
@@ -125,21 +127,3 @@ export const deleteProduct = async (req, res) => {
   }
 
 }
-
-
-// export const upload = async (req, res) => {
-
-//   try {
-    
-//     console.log(req.file); 
-//     return  res.status(201).json({
-//       message: 'ok',
-//       file: req.file
-//     })
-
-//   } catch (error) {
-//     console.log(error);
-//   }
-
-// }
- 
