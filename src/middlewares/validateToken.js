@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const getTokenFrom = req => {
-  const authorization = req.get('Authorization')
+  const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     console.log('getToken', authorization.substring(7));
     return authorization.substring(7)
