@@ -17,7 +17,10 @@ export const authRequired = (req, res, next) => {
 
   jwt.verify(token, process.env.TOKEN_SECRET, 
     (err, decode) => {
-      if (err) return res.status(403).json(err)
+      if (err) {
+        return res.status(403).json(err)
+        console.log(err);
+      }
 
       console.log(decode);
       // guardo el id del user en el req, para acceder desde profile
