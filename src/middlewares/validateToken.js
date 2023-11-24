@@ -3,28 +3,33 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const getTokenFrom = req => {
-  const authorization = req.get('authorization')
-  console.log(authorization);
+  const authorization = req.get('Authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    console.log('getToken', authorization.substring(7));
     return authorization.substring(7)
   }
   return null
 }
 
 export const authRequired = (req, res, next) => {
-
+  console.log(req.headers);
   const token = getTokenFrom(req)
+  console.log(token);
 
   jwt.verify(token, process.env.TOKEN_SECRET, 
-    (err, decode) => {
-      if (err) {
-        return res.status(403).json(err)
-        console.log(err);
-      }
+    (err, decoded) => {
+    if (err) {
+      console.error('Error verifying token:', err);
+      return res.status(403).json({ 
+        error: true, 
+        code: 403,
+        message: [err.message] 
+      });
+    }
 
-      console.log(decode);
+      console.log(decoded);
       // guardo el id del user en el req, para acceder desde profile
-      req.user = decode
+      req.user = decoded
       
       next()
   
