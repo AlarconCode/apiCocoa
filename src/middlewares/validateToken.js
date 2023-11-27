@@ -3,7 +3,8 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const getTokenFrom = req => {
-  const authorization = req.get('authorization')
+  console.log(req.headers.authorization);
+  const authorization = req.headers.authorization
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     console.log('getToken', authorization.substring(7));
     return authorization.substring(7)
@@ -12,7 +13,6 @@ const getTokenFrom = req => {
 }
 
 export const authRequired = (req, res, next) => {
-  console.log(req.headers);
   const token = getTokenFrom(req)
   console.log(token);
 
