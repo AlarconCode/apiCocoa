@@ -13,6 +13,7 @@ const getTokenFrom = req => {
 }
 
 export const authRequired = (req, res, next) => {
+  console.log(req.headers.cookie);
   const token = getTokenFrom(req)
   console.log(token);
 
