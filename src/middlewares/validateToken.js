@@ -3,8 +3,8 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const getTokenFrom = req => {
-  console.log(req.headers.authorization);
-  const authorization = req.headers.authorization
+  console.log(req.headers.x_authorization);
+  const authorization = req.headers.x_authorization
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     console.log('getToken', authorization.substring(7));
     return authorization.substring(7)
@@ -13,7 +13,6 @@ const getTokenFrom = req => {
 }
 
 export const authRequired = (req, res, next) => {
-  console.log(req.headers.cookie);
   const token = getTokenFrom(req)
   console.log(token);
 

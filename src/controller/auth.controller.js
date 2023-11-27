@@ -50,7 +50,7 @@ export const register = async (req, res) => {
     .cookie("jwt", token, {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: true,
-      sameSite: 'none'
+      sameSite: 'none',
     })
     .json({
       error: false,
