@@ -16,6 +16,14 @@ export const authRequired = (req, res, next) => {
   const token = getTokenFrom(req)
   console.log(token);
 
+  if (!token) {
+    return res.status(401).json({ 
+      error: true, 
+      code: 401,
+      message: ['Token required'] 
+    });
+  }
+
   jwt.verify(token, process.env.TOKEN_SECRET, 
     (err, decoded) => {
     if (err) {
