@@ -1,14 +1,13 @@
 import { User } from "../model/user.model.js";
-import { Blacklist } from "../model/blacklist.model.js";
 import bcrypt from 'bcrypt';
 import { createAccessToken } from "../libs/jwt.js";
+import jwt from 'jsonwebtoken'
 
 export const getUsers = async (req, res) => {
 
   try {
 
     const data = await User.find()
-    console.log(data);
     res.json(data)
 
   } catch (error) {
@@ -44,7 +43,7 @@ export const register = async (req, res) => {
     })
 
     const userSaved = await newUser.save()
-    const token = await createAccessToken({id: userSaved._id})
+    const token = await createAccessToken({id: userSaved._id, name: userSaved.name})
      
     res
     .cookie("jwt", token, {
@@ -97,7 +96,6 @@ export const updateUser = async (req, res) => {
 
 }
 
-// login con Bearer token en headers
 export const login = async (req, res) => {
   
   const {email, password} = req.body
@@ -117,7 +115,13 @@ export const login = async (req, res) => {
         })
       }
 
-      const token = await createAccessToken({id: userFound._id})
+      const userForToken = {
+        userId: userFound._id,
+        name: userFound.name
+      }
+      
+      const maxAge = 3 * 24 * 60 * 60;
+      const token = jwt.sign(userForToken, process.env.TOKEN_SECRET, { expiresIn: maxAge })
 
       res
       .cookie("jwt", token, {
@@ -193,7 +197,6 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
 
   try {
-    console.log(req.headers);
     res.setHeader('Clear-Site-Data', '"cookies", "storage"');
     return res.status(200).json({ message: 'You are logged out!' });
   
@@ -232,7 +235,6 @@ export const profile = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
 
-  console.log(req.params);
   try {
     const user = await User.findByIdAndDelete(req.params.id)
     if (!user) return res.status(404).json({message: 'user not found'})

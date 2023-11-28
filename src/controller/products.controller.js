@@ -1,4 +1,5 @@
 import { Product } from '../model/product.model.js'
+import { User } from '../model/user.model.js'
 
 export const getProducts = async (req, res) => {
   
@@ -51,9 +52,11 @@ export const createProduct = async (req, res) => {
       cat, 
       desc,
       ingredientes,
-      price,
-      user: req.user.id
+      price
     })
+
+    const user = await User.findById(req.user.id)
+    if (!user) return res.status(404).json({message: 'user not found'})
 
     if (req.file) {
       newProduct.img = req.file.path

@@ -1,27 +1,40 @@
+import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
-import jwt from 'jsonwebtoken'
 
 const maxAge = 3 * 24 * 60 * 60;
-// export const createToken = (id) => {
-//   return jwt.sign({ id }, process.env.TOKEN_SECRET, {
+export const createAccessToken = (payload) => {
+  jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: maxAge }, function(err, token) {
+    if (err) {
+      console.log(err);
+    }
+    return token
+  });
+};
+
+
+// let token = null
+// export const createAccessToken = (payload) => {
+//   token = jwt.sign(payload, 'privatekey', {
 //     expiresIn: maxAge,
 //   });
+//   return token
 // };
 
-export function createAccessToken(id) {
+// export function createAccessToken(payload) {
 
-  return new Promise((resolve, reject) => {
-    jwt.sign(
-      id,  
-      process.env.TOKEN_SECRET, 
-      { 
-        expiresIn: maxAge
-      },
-      (error, token) => {
-        if (error) reject(error)
-        resolve(token)
-      })
-  })
+//   return new Promise((resolve, reject) => {
+//     jwt.sign(
+//       payload,  
+//       process.env.TOKEN_SECRET, 
+//       { 
+//         expiresIn: maxAge
+//       },
+//       (error, token) => {
+//         if (error) reject(error)
+//         resolve(token)
+//       })
+//   })
 
-}
+
+// }

@@ -2,21 +2,17 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const getTokenFrom = req => {
-  console.log(req.headers.x_authorization);
-  const authorization = req.headers.x_authorization
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    console.log('getToken', authorization.substring(7));
-    return authorization.substring(7)
-  }
-  return null
-}
-
 export const authRequired = (req, res, next) => {
-  const token = getTokenFrom(req)
-  console.log(token);
+  const authorization = req.get('authorization')
+  let token = null
 
-  if (!token) {
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    token = authorization.substring(7)
+  }
+
+  const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
+
+  if (!token || !decodedToken.id) {
     return res.status(401).json({ 
       error: true, 
       code: 401,
@@ -24,24 +20,8 @@ export const authRequired = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.TOKEN_SECRET, 
-    (err, decoded) => {
-    if (err) {
-      console.error('Error verifying token:', err);
-      return res.status(403).json({ 
-        error: true, 
-        code: 403,
-        message: [err.message] 
-      });
-    }
-
-      console.log(decoded);
-      // guardo el id del user en el req, para acceder desde profile
-      req.user = decoded
-      
-      next()
-  
-    })
-
+  const { id: userId } = decodedToken
+  req.userId = userId
+  next()
 
 }
