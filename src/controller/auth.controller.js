@@ -116,7 +116,7 @@ export const login = async (req, res) => {
       }
 
       const userForToken = {
-        userId: userFound._id,
+        id: userFound._id,
         name: userFound.name
       }
       
@@ -133,6 +133,7 @@ export const login = async (req, res) => {
         error: false,
         code: 200,
         message: 'user login successfully',
+        token: token,
         user: {
           name: userFound.name,
           email: userFound.email,
