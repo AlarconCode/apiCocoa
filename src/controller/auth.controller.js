@@ -47,6 +47,7 @@ export const register = async (req, res) => {
      
     res
     .cookie("jwt", token, {
+      httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: true,
       sameSite: 'none',
@@ -65,7 +66,11 @@ export const register = async (req, res) => {
   } catch (error) {
     res
     .status(500)
-    .json({ message: error.message })
+    .json({ 
+      error: true,
+      code: 500,
+      message: error.message 
+    })
   }
 
 }
@@ -120,11 +125,13 @@ export const login = async (req, res) => {
         name: userFound.name
       }
       
-      const maxAge = 3 * 24 * 60 * 60;
-      const token = jwt.sign(userForToken, process.env.TOKEN_SECRET, { expiresIn: maxAge })
+      // const maxAge = 3 * 24 * 60 * 60;
+      // const token = jwt.sign(userForToken, process.env.TOKEN_SECRET, { expiresIn: maxAge })
+      const token = await createAccessToken(userForToken)
 
       res
       .cookie("jwt", token, {
+        httpOnly: true,
         maxAge: 3 * 24 * 60 * 60 * 1000,
         secure: true,
         sameSite: 'none'
@@ -133,7 +140,6 @@ export const login = async (req, res) => {
         error: false,
         code: 200,
         message: 'user login successfully',
-        token: token,
         user: {
           name: userFound.name,
           email: userFound.email,
@@ -142,63 +148,20 @@ export const login = async (req, res) => {
       })
      
   } catch (error) {
-    res.status(500).json({ message: error.message })
+      res
+      .status(500)
+      .json({ 
+        error: true,
+        code: 500,
+        message: error.message 
+      })
   }
 }
-
-// export const login = async (req, res) => {
-  
-//   const {email, password} = req.body
-
-//   try {
-
-//     const userFound = await User.findOne({email})
-//     if (userFound) {
-//       const isMatch = await bcrypt.compare(password, userFound.password)
-//       if (!isMatch) return res.status(400).json({
-//         error: true,
-//         code: 400,
-//         message: 'password incorrect'})
-
-//       const token = await createAccessToken({id: userFound._id})
-
-//       res.cookie('token', token)
-//       .json({
-//         error: false,
-//         code: 200,
-//         message: 'user login successfully',
-//         user: {
-//           id: userFound._id,
-//           name: userFound.name,
-//           surname: userFound.surname,
-//           email: userFound.email,
-//           img: userFound.img,
-//           rol: userFound.rol,
-//           createAt: userFound.createdAt,
-//           updateAt: userFound.updatedAt
-//         }
-//       })
-
-//     } else {
-
-//       res
-//       .status(400)
-//       .json({
-//         error: true,
-//         code: 400,
-//         message: 'The user doesn`t exists', 
-//         newUser: null})
-//     }
-     
-//   } catch (error) {
-//     res.status(500).json({ message: error.message })
-//   }
-// }
 
 export const logout = async (req, res) => {
 
   try {
-    res.setHeader('Clear-Site-Data', '"cookies", "storage"');
+    res.clearCookie('jwt')
     return res.status(200).json({ message: 'You are logged out!' });
   
   } catch (err) {

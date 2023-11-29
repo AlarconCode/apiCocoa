@@ -80,6 +80,10 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
 
   try {
+
+    const user = await User.findById(req.user.id)
+    if (!user) return res.status(404).json({message: 'user not found'})
+
     if (req.file) {
       const product = await Product.findOneAndUpdate({_id: req.params.id}, {
         ...req.body,
