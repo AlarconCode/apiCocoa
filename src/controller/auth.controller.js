@@ -1,5 +1,4 @@
 import { User } from "../model/user.model.js";
-import { Blacklist } from "../model/blacklist.model.js";
 import bcrypt from 'bcrypt';
 import { createAccessToken } from "../libs/jwt.js";
 
@@ -8,7 +7,6 @@ export const getUsers = async (req, res) => {
   try {
 
     const data = await User.find()
-    console.log(data);
     res.json(data)
 
   } catch (error) {
@@ -48,7 +46,7 @@ export const register = async (req, res) => {
      
     res
     .cookie("jwt", token, {
-      httpOnly: false,
+      httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000
     })
     .json({
@@ -120,7 +118,7 @@ export const login = async (req, res) => {
 
       res
       .cookie("jwt", token, {
-        httpOnly: false,
+        httpOnly: true,
         maxAge: 3 * 24 * 60 * 60 * 1000
       })
       .json({
@@ -139,60 +137,11 @@ export const login = async (req, res) => {
   }
 }
 
-// export const login = async (req, res) => {
-  
-//   const {email, password} = req.body
-
-//   try {
-
-//     const userFound = await User.findOne({email})
-//     if (userFound) {
-//       const isMatch = await bcrypt.compare(password, userFound.password)
-//       if (!isMatch) return res.status(400).json({
-//         error: true,
-//         code: 400,
-//         message: 'password incorrect'})
-
-//       const token = await createAccessToken({id: userFound._id})
-
-//       res.cookie('token', token)
-//       .json({
-//         error: false,
-//         code: 200,
-//         message: 'user login successfully',
-//         user: {
-//           id: userFound._id,
-//           name: userFound.name,
-//           surname: userFound.surname,
-//           email: userFound.email,
-//           img: userFound.img,
-//           rol: userFound.rol,
-//           createAt: userFound.createdAt,
-//           updateAt: userFound.updatedAt
-//         }
-//       })
-
-//     } else {
-
-//       res
-//       .status(400)
-//       .json({
-//         error: true,
-//         code: 400,
-//         message: 'The user doesn`t exists', 
-//         newUser: null})
-//     }
-     
-//   } catch (error) {
-//     res.status(500).json({ message: error.message })
-//   }
-// }
-
 export const logout = async (req, res) => {
 
   try {
-    console.log(req.headers);
-    res.setHeader('Clear-Site-Data', '"cookies", "storage"');
+    // res.setHeader('Clear-Site-Data', '"cookies", "storage"');
+    res.clearCookie('jwt')
     return res.status(200).json({ message: 'You are logged out!' });
   
   } catch (err) {
@@ -230,7 +179,6 @@ export const profile = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
 
-  console.log(req.params);
   try {
     const user = await User.findByIdAndDelete(req.params.id)
     if (!user) return res.status(404).json({message: 'user not found'})
