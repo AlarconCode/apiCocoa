@@ -89,21 +89,34 @@ export const updateProduct = async (req, res) => {
         ...req.body,
         img: req.file.path
       }, { new: true });
+
       if (!product) return res.status(404).json({message: 'product not found'})
-      res.status(201).json({
-        message:'Product updated successfully',
+
+      res.status(200).json({
+        error: false,
+        code: 200,  
+        message:'Producto actualizado correctamente',
         newProduct: product
-    })
+      })
+
     } else {
         const product = await Product.findOneAndUpdate({_id: req.params.id}, req.body, { new: true });
         if (!product) return res.status(404).json({message: 'product not found'})
-        res.json(product)
+        res.status(200).json({
+        error: false,
+        code: 200,  
+        message:'Producto actualizado correctamente',
+        newProduct: product
+      })
     }
     
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Internal server error'})
+    res.status(500).json({ 
+      error: true,
+      code: 500,
+      message: error.message})
   }
   
 

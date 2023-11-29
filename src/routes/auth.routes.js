@@ -7,7 +7,8 @@ import {
   logout, 
   profile, 
   register, 
-  updateUser } from "../controller/auth.controller.js";
+  updateUser, 
+  verifyToken} from "../controller/auth.controller.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
 import { authSchema } from "../schemas/auth.schema.js";
 import { loginSchema } from "../schemas/login.schema.js";
@@ -21,6 +22,7 @@ authRouter.post('/login', validateSchema(loginSchema) , login)
 authRouter.post('/logout', logout)
 authRouter.put('/update', authRequired, updateUser)
 authRouter.delete('/user/:id', authRequired, deleteUser)
+authRouter.post('/verify-token', authRequired, verifyToken)
 
 export default authRouter
 

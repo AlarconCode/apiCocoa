@@ -209,3 +209,47 @@ export const deleteUser = async (req, res) => {
   }
 
 } 
+
+export const verifyToken = async (req, res) => {  
+
+  try {
+  
+    let token = null
+
+    if (req && req.headers.cookie) {
+      const cookies = req.headers.cookie.split(';')
+      cookies.forEach(cookie => {
+        const cookieArr = cookie.split('=')
+        if (cookieArr[0].trim() === 'jwt') {
+          token = cookieArr[1]
+        }
+      })
+    }
+
+    if (!token) return res.status(401).json({
+      error: true,
+      code: 401,
+      message: 'Token required'
+    })
+
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, decodedToken) => {
+      if (err) {
+        return res.status(401).json({ 
+          error: true, 
+          code: 401,
+          message: err.message
+        });
+      }
+
+      res.status(200).json({
+        error: false,
+        code: 200,
+        message: 'token verified'
+      })
+    
+    })
+  
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}

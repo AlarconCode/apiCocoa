@@ -5,10 +5,10 @@ export const validateSchema = (schema) => async (req, res, next) => {
     next()
 
   } catch (e) {
-
-    return res.status(400).json({ 
+    console.log(e);
+    return res.status(403).json({ 
       error: true, 
-      code: 400,
+      code: 403,
       message: e.errors 
     });
   }
