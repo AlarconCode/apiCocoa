@@ -132,7 +132,7 @@ export const login = async (req, res) => {
       res
       .cookie("jwt", token, {
         httpOnly: true,
-        maxAge: 3 * 24 * 60 * 60 * 1000,
+        maxAge: 60 * 1000,
         secure: true,
         sameSite: 'none'
       })
@@ -229,7 +229,7 @@ export const verifyToken = async (req, res) => {
     if (!token) return res.status(401).json({
       error: true,
       code: 401,
-      message: 'Token required'
+      message: ['Token required']
     })
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decodedToken) => {
@@ -237,19 +237,19 @@ export const verifyToken = async (req, res) => {
         return res.status(401).json({ 
           error: true, 
           code: 401,
-          message: err.message
+          message: err
         });
       }
 
       res.status(200).json({
         error: false,
         code: 200,
-        message: 'token verified'
+        message: ['token verified']
       })
     
     })
   
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error })
   }
 }
