@@ -132,7 +132,7 @@ export const login = async (req, res) => {
       res
       .cookie("jwt", token, {
         httpOnly: true,
-        maxAge: 60 * 1000,
+        maxAge: 3 * 24 * 60 * 60 * 1000,
         secure: true,
         sameSite: 'none'
       })
@@ -244,7 +244,7 @@ export const verifyToken = async (req, res) => {
       res.status(200).json({
         error: false,
         code: 200,
-        message: ['token verified']
+        message: ['Token verified']
       })
     
     })

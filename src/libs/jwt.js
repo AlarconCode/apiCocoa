@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const maxAge = 60;
+const maxAge = 3 * 24 * 60 * 60;
 // export const createAccessToken = (payload) => {
 //   jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: maxAge }, function(err, token) {
 //     if (err) {
