@@ -161,7 +161,8 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
 
   try {
-    res.clearCookie('jwt')
+    // res.clearCookie('jwt')
+    res.cookie('jwt', '', { expires: new Date(0) });
     return res.status(200).json({ message: 'You are logged out!' });
   
   } catch (err) {
