@@ -4,7 +4,7 @@ dotenv.config()
 
 export const authRequired = (req, res, next) => {
   let token = null
-
+  console.log(req.headers);
   if (req && req.headers.cookie) {
     const cookies = req.headers.cookie.split(';')
     cookies.forEach(cookie => {

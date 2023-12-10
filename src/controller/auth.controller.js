@@ -50,7 +50,7 @@ export const register = async (req, res) => {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: true,
-      sameSite: 'none',
+      sameSite: 'strict',
     })
     .json({
       error: false,
@@ -134,7 +134,7 @@ export const login = async (req, res) => {
         httpOnly: true,
         maxAge: 3 * 24 * 60 * 60 * 1000,
         secure: true,
-        sameSite: 'none'
+        SameSite: 'strict'
       })
       .json({
         error: false,
@@ -167,7 +167,7 @@ export const logout = async (req, res) => {
         httpOnly: true,
         maxAge: 0,
         secure: true,
-        sameSite: 'none'
+        SameSite: 'none'
       }).status(200).json({ message: 'You are logged out!' });
   
   } catch (err) {
@@ -220,6 +220,7 @@ export const verifyToken = async (req, res) => {
 
   try {
   
+    console.log(req.headers)
     let token = null
 
     if (req && req.headers.cookie) {
