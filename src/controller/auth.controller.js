@@ -134,12 +134,11 @@ export const login = async (req, res) => {
         httpOnly: true,
         maxAge: 3 * 24 * 60 * 60 * 1000,
         secure: true,
-        SameSite: 'none'
+        sameSite: 'none'
       })
       .json({
         error: false,
         code: 200,
-        token: token,
         message: 'user login successfully',
         user: {
           name: userFound.name,
