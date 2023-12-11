@@ -128,7 +128,7 @@ export const login = async (req, res) => {
       // const maxAge = 3 * 24 * 60 * 60;
       // const token = jwt.sign(userForToken, process.env.TOKEN_SECRET, { expiresIn: maxAge })
       const token = await createAccessToken(userForToken)
-
+      
       res
       .cookie("jwt", token, {
         httpOnly: true,
@@ -139,6 +139,7 @@ export const login = async (req, res) => {
       .json({
         error: false,
         code: 200,
+        token: token,
         message: 'user login successfully',
         user: {
           name: userFound.name,
